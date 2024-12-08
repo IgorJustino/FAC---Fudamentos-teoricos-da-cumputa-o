@@ -1,0 +1,32 @@
+Acesso a memoria
+Sua tarefa neste trabalho e bem simples: lidar com instrucoes de leitura e escrita na memoria usando assembly MIPS.
+
+Voce deve ler 3 inteiros i, j e N e voce deve calcular A[i] = A[j] + N. Voce pode assumir que o endereco base do vetor A esta no registrador s0.
+
+Entrada
+A entrada e composta por tres linhas. A primeira linha da entrada contem um unico inteiro i, a segunda linha um inteiro j e a terceira linha, um inteiro N. Voce deve calcular A[i] = A[j] + N, assumindo que o endereco base do vetor A esta no registrador s0.
+
+Saida
+O programa nao precisa ter saida, basta realizar a operacao determinada acima.
+
+Restricoes
+Neste exercicio, voce deve submeter apenas o fragmento de codigo que resolva o problema (ou seja, voce nao deve submeter a secao .text, .data nem tampouco a main).
+
+# A[i] = A[j] + N
+# $s0: base do vetor A
+# $a0: índice i
+# $a1: índice j
+# $a2: valor N
+
+# Carregar A[j]
+sll $t0, $a1, 2         # Multiplica j por 4 (tamanho do inteiro)
+add $t0, $s0, $t0       # Calcula o endereço de A[j] (base + deslocamento)
+lw $t1, 0($t0)          # Carrega A[j] em $t1
+
+# Soma A[j] + N
+add $t1, $t1, $a2       # $t1 = A[j] + N
+
+# Armazenar A[j] + N em A[i]
+sll $t0, $a0, 2         # Multiplica i por 4 (tamanho do inteiro)
+add $t0, $s0, $t0       # Calcula o endereço de A[i] (base + deslocamento)
+sw $t1, 0($t0)          # Armazena A[j] + N em A[i]
