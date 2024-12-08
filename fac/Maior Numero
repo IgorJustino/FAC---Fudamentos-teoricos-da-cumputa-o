@@ -1,0 +1,50 @@
+Maior numero - ASSEMBLY
+O objetivo neste exercicio e simples voce deve ler n numeros e determinar o maior entre eles
+
+Entrada
+A entrada e composta por diversas linhas A primeira linha contem um inteiro n (1<=n<=10 5) As n linhas seguintes contem cada uma um inteiro
+
+Saida
+A saida e composta por uma unica linha contendo o maior dos n numeros lidos.
+
+.data
+    newline: .asciiz "\n"
+
+.text
+.globl main
+
+main:
+    li $v0, 5               # Syscall para ler inteiro
+    syscall
+    move $t0, $v0           # $t0 = n (quantidade de números)
+
+    li $t1, -2147483648     # $t1 = maior número (-inf)
+
+    li $t2, 0               # $t2 = contador (inicia em 0)
+
+loop:
+    bge $t2, $t0, end       # Se contador >= n, terminar o loop
+
+    li $v0, 5               
+    syscall
+    move $t3, $v0           # $t3 = número lido
+
+    blt $t3, $t1, skip_update
+    move $t1, $t3           
+
+skip_update:
+    addi $t2, $t2, 1        # Incrementa o contador
+    j loop                 
+
+end:
+    li $v0, 1               
+    move $a0, $t1           # Passa o maior número para $a0
+    syscall
+    
+    li $v0, 4               
+    la $a0, newline
+    syscall
+
+    li $v0, 10              
+    syscall
+
