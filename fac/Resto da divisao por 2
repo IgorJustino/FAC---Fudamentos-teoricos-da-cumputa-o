@@ -1,0 +1,56 @@
+Resto da divisao por 2
+Sua tarefa nesse exercicio e criar um programa que leia um numero inteiro n >= 0 da entrada padrao e imprima na tela o resto da divisao de n por 2i, com 1 <= i <= 31.
+
+Atencao:
+
+Nao use instrucoes de divisao que calcule o resto automaticamente.
+
+Procure usar instrucoes logicas em sua solucao.
+
+Entrada
+A entrada e composta por duas linhas A primeira linha contem o inteiro n de 32 bits, e a segunda linha contem o inteiro i.
+
+Saida
+Voce deve imprimir o resto da divisao de n por 2i.
+
+
+.data
+n: .word 0          # P/armazenar o número n
+i: .word 0          # P/armazenar o número i
+result: .word 0     # P/armazenar o resultado 
+
+.text
+.globl main
+
+main:
+    # Ler N
+    li $v0, 5        # Syscall para ler um inteiro
+    syscall
+    sw $v0, n        # Armazena n na memória
+
+    # Ler I
+    li $v0, 5        # Syscall para ler um inteiro
+    syscall
+    sw $v0, i        # Armazena i na memória
+
+    # Carregar n e i P/ registrador
+    lw $t0, n        # n p/ $t0
+    lw $t1, i        # i p/ $t1
+
+    # serve p/ Calcular 2^i - 1
+    li $t2, 1        # Inicializa $t2 com 1
+    sllv $t2, $t2, $t1  # $t2 = 1 << i (2^i)
+    subu $t2, $t2, 1    # $t2 = 2^i - 1
+    
+    and $t3, $t0, $t2  # $t3 = n & (2^i - 1)
+
+    # Salva resultado na memoria
+    sw $t3, result
+
+    # Imprimir o resultado
+    lw $a0, result    
+    li $v0, 1         
+    syscall
+
+    li $v0, 10        
+    syscall
